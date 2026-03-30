@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>サーモンラン簡易タイマー</title>
+<style>
+  body { font-family: sans-serif; text-align: center; padding: 20px; }
+  #time { font-size: 48px; margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<h1>サーモンラン簡易タイマー</h1>
+<div id="time">0.0</div>
+
+<button id="startBtn">START</button>
+<button id="stopBtn">STOP</button>
+
+<audio id="beep1" src="audio/beep1.mp3"></audio>
+<audio id="beep2" src="audio/beep2.mp3"></audio>
+
+<script>
+let startTime = 0;
+let running = false;
+let rafId = null;
+
+// イベントスケジュール（例）
+const events = [
+  { time: 7, sound: "beep1", played: false },
+  { time: 15, sound: "beep2", played: false }
+];
+
+function startTimer() {
+  events.forEach(e => e.played = false);
+  startTime = performance.now();
+  running = true;
+  update();
+}
+
+function stopTimer() {
+  running = false;
+  cancelAnimationFrame(rafId);
+}
+
+function update() {
+  if (!running) return;
+
+  const now = performance.now();
+  const elapsed = (now - startTime) / 1000;
+
+  document.getElementById("time").textContent = elapsed.toFixed(1);
+
+  // イベントチェック
+  events.forEach(e => {
+    if (!e.played && elapsed >= e.time) {
+      document.getElementById(e.sound).play();
+      e.played = true;
+    }
+  });
+
+  rafId = requestAnimationFrame(update);
+}
+
+document.getElementById("startBtn").onclick = startTimer;
+document.getElementById("stopBtn").onclick = stopTimer;
+</script>
+
+</body>
+</html>
