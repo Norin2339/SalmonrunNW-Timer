@@ -16,7 +16,7 @@
 <button id="startBtn">START</button>
 <button id="stopBtn">STOP</button>
 
-<!-- ここに追加 -->
+<!-- テスト用ボタン -->
 <button onclick="document.getElementById('beep_short').play()">短音テスト</button>
 <button onclick="document.getElementById('beep_long').play()">長音テスト</button>
 
@@ -30,27 +30,44 @@ let rafId = null;
 
 const TOTAL_TIME = 117;
 
+// イベント一覧（内部時間で判定）
 const events = [
+  // Wave開始前のカウントダウン
   { time: 103, sound: "beep_short", played: false },
   { time: 102, sound: "beep_short", played: false },
   { time: 101, sound: "beep_short", played: false },
   { time: 100, sound: "beep_long",  played: false },
 
-  // ここから先は既存の31〜28秒
+  // Wave終盤のカウントダウン
   { time: 31, sound: "beep_short", played: false },
   { time: 30, sound: "beep_short", played: false },
   { time: 29, sound: "beep_short", played: false },
   { time: 28, sound: "beep_long",  played: false }
 ];
 
+function startTimer() {
+  events.forEach(e => e.played = false);
+  startTime = performance.now();
+  running = true;
+  update();
+}
+
+function stopTimer() {
+  running = false;
+  cancelAnimationFrame(rafId);
+}
 
 function update() {
+  if (!running) return;
+
   const now = performance.now();
   const elapsed = (now - startTime) / 1000;
   const remaining = TOTAL_TIME - elapsed;
 
-  document.getElementById("time").textContent = displayTime.toFixed(1);
+  // 表示は117秒からスタート
+  document.getElementById("time").textContent = remaining.toFixed(1);
 
+  // イベント判定
   events.forEach(e => {
     if (!e.played && remaining <= e.time) {
       document.getElementById(e.sound).play();
