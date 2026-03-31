@@ -28,10 +28,13 @@ let startTime = 0;
 let running = false;
 let rafId = null;
 
-// イベントスケジュール（例）
+const TOTAL_TIME = 100;
+
 const events = [
-  { time: 7, sound: "beep1", played: false },
-  { time: 15, sound: "beep2", played: false }
+  { time: 31, sound: "beep_short", played: false },
+  { time: 30, sound: "beep_short", played: false },
+  { time: 29, sound: "beep_short", played: false },
+  { time: 28, sound: "beep_long",  played: false }
 ];
 
 function startTimer() {
@@ -51,20 +54,23 @@ function update() {
 
   const now = performance.now();
   const elapsed = (now - startTime) / 1000;
+  const remaining = TOTAL_TIME - elapsed;
 
-  document.getElementById("time").textContent = elapsed.toFixed(1);
+  document.getElementById("time").textContent = remaining.toFixed(1);
 
-  // イベントチェック
   events.forEach(e => {
-    if (!e.played && elapsed >= e.time) {
+    if (!e.played && remaining <= e.time) {
       document.getElementById(e.sound).play();
       e.played = true;
     }
   });
 
-  rafId = requestAnimationFrame(update);
+  if (remaining > 0) {
+    rafId = requestAnimationFrame(update);
+  } else {
+    running = false;
+  }
 }
-
 document.getElementById("startBtn").onclick = startTimer;
 document.getElementById("stopBtn").onclick = stopTimer;
 </script>
