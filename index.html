@@ -31,11 +31,18 @@ let rafId = null;
 const TOTAL_TIME = 117;
 
 const events = [
-  { time: 48, sound: "beep_short", played: false },
-  { time: 47, sound: "beep_short", played: false },
-  { time: 46, sound: "beep_short", played: false },
-  { time: 45, sound: "beep_long",  played: false }
+  { time: 103, sound: "beep_short", played: false },
+  { time: 102, sound: "beep_short", played: false },
+  { time: 101, sound: "beep_short", played: false },
+  { time: 100, sound: "beep_long",  played: false },
+
+  // ここから先は既存の31〜28秒
+  { time: 31, sound: "beep_short", played: false },
+  { time: 30, sound: "beep_short", played: false },
+  { time: 29, sound: "beep_short", played: false },
+  { time: 28, sound: "beep_long",  played: false }
 ];
+
 
 function update() {
   const now = performance.now();
