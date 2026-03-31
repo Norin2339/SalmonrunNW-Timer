@@ -42,9 +42,6 @@ function update() {
   const elapsed = (now - startTime) / 1000;
   const remaining = TOTAL_TIME - elapsed;
 
-  // 表示用の残り時間（100秒基準）
-  const displayTime = remaining - 17;
-
   document.getElementById("time").textContent = displayTime.toFixed(1);
 
   events.forEach(e => {
