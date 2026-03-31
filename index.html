@@ -28,35 +28,24 @@ let startTime = 0;
 let running = false;
 let rafId = null;
 
-const TOTAL_TIME = 100;
+const TOTAL_TIME = 117;
 
 const events = [
-  { time: 31, sound: "beep_short", played: false },
-  { time: 30, sound: "beep_short", played: false },
-  { time: 29, sound: "beep_short", played: false },
-  { time: 28, sound: "beep_long",  played: false }
+  { time: 48, sound: "beep_short", played: false },
+  { time: 47, sound: "beep_short", played: false },
+  { time: 46, sound: "beep_short", played: false },
+  { time: 45, sound: "beep_long",  played: false }
 ];
 
-function startTimer() {
-  events.forEach(e => e.played = false);
-  startTime = performance.now();
-  running = true;
-  update();
-}
-
-function stopTimer() {
-  running = false;
-  cancelAnimationFrame(rafId);
-}
-
 function update() {
-  if (!running) return;
-
   const now = performance.now();
   const elapsed = (now - startTime) / 1000;
   const remaining = TOTAL_TIME - elapsed;
 
-  document.getElementById("time").textContent = remaining.toFixed(1);
+  // 表示用の残り時間（100秒基準）
+  const displayTime = remaining - 17;
+
+  document.getElementById("time").textContent = displayTime.toFixed(1);
 
   events.forEach(e => {
     if (!e.played && remaining <= e.time) {
@@ -71,6 +60,7 @@ function update() {
     running = false;
   }
 }
+
 document.getElementById("startBtn").onclick = startTimer;
 document.getElementById("stopBtn").onclick = stopTimer;
 </script>
